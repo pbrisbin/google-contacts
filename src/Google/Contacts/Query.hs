@@ -1,8 +1,8 @@
-module Contacts.Query
+module Google.Contacts.Query
     ( queryFeed
     ) where
 
-import Contacts.Feed
+import Google.Contacts.Feed
 
 import Data.Text (Text)
 

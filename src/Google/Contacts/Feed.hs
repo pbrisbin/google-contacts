@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Contacts.Feed
+module Google.Contacts.Feed
     ( Email(..)
     , Entry(..)
     , Feed(..)

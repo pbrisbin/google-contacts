@@ -1,12 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
 
-import Contacts.Client
-import Contacts.Format
-import Contacts.Options
-import Contacts.Query
+import Google.Contacts.Client
+import Google.Contacts.Formatters.Mutt
+import Google.Contacts.Query
 
 import Network.Google.OAuth2 (OAuth2Client(..), OAuth2Token, getAccessToken)
+import Options.Applicative
 import System.Environment (getEnv)
 import System.Environment.XDG.BaseDir (getUserCacheDir)
 import System.Exit (exitFailure)
@@ -14,6 +14,11 @@ import System.FilePath ((</>), (<.>))
 import System.IO (hPutStrLn, stderr)
 
 import qualified Data.Text.IO as T
+
+data Options = Options
+    { oEmailAddress :: String
+    , oQuery :: String
+    }
 
 main :: IO ()
 main = do
@@ -45,3 +50,17 @@ getToken email = do
 
     cache :: FilePath -> FilePath
     cache cdir = cdir </> email <.> "token"
+
+
+getOptions :: IO Options
+getOptions = execParser $ parseOptions
+    `withInfo` "Query google contacts from mutt"
+
+  where
+    withInfo :: Parser a -> String -> ParserInfo a
+    withInfo opts desc = info (helper <*> opts) $ progDesc desc
+
+    parseOptions :: Parser Options
+    parseOptions = Options
+        <$> argument str (metavar "EMAIL")
+        <*> argument str (metavar "QUERY")

@@ -1,4 +1,4 @@
-module Contacts.Client
+module Google.Contacts.Client
     ( getFeedJSON
     ) where
 

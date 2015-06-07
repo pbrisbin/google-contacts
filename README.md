@@ -1,15 +1,15 @@
-# Contacts
+# Google Contacts
 
-*Different, less generic name TBD*
-
-Use Google Contacts API to implement a Mutt `$query_command`.
+A pretty-dumb Google Contacts API client for the sole purpose of outputting
+contacts suitably for Mutt's `$query_command`.
 
 ## Installation
 
 ```
-git clone https://github.com/pbrisbin/contacts && cd contacts
+git clone https://github.com/pbrisbin/google-contacts && cd google-contacts
 cabal sandbox init
 cabal install --dependencies-only
+cabal build
 ```
 
 ## Usage
@@ -26,7 +26,7 @@ export GOOGLE_OAUTH_CLIENT_SECRET=abc123
 cabal run -- you@gmail.com query
 ```
 
-## Usage with Mutt
+## Integrating with Mutt
 
 I suggest the following approach:
 
@@ -41,10 +41,10 @@ I suggest the following approach:
 
   ```sh
   #!/bin/sh
-  cd /path/to/contacts
+  cd /path/to/google-contacts
 
   source ./.env # set CLIENT_ID/CLIENT_SECRET
-  dist/build/contacts/contacts "$@"
+  dist/build/gc-mutt-query/gc-mutt-query "$@"
   ```
 
 - Configure Mutt:

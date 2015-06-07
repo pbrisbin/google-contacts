@@ -1,4 +1,4 @@
-name:                   contacts
+name:                   google-contacts
 version:                0.0.0
 author:                 Pat Brisbin <pbrisbin@gmail.com>
 maintainer:             Pat Brisbin <pbrisbin@gmail.com>
@@ -13,31 +13,30 @@ library
   default-language:     Haskell2010
   hs-source-dirs:       src
   ghc-options:          -Wall -O2 -threaded
-  exposed-modules:      Contacts.Client
-                      , Contacts.Feed
-                      , Contacts.Format
-                      , Contacts.Options
-                      , Contacts.Query
+  exposed-modules:      Google.Contacts.Client
+                      , Google.Contacts.Feed
+                      , Google.Contacts.Formatters.Mutt
+                      , Google.Contacts.Query
   build-depends:        base >= 4 && < 5
                       , aeson
                       , bytestring
                       , google-oauth2
                       , http-conduit
                       , http-types
-                      , optparse-applicative
                       , text
 
-executable contacts
+executable gc-mutt-query
   default-language:     Haskell2010
-  main-is:              main.hs
+  main-is:              mutt-query.hs
   ghc-options:          -Wall -O2 -threaded
   build-depends:        base
-                      , contacts
                       , filepath
+                      , google-contacts
                       , google-oauth2
+                      , optparse-applicative
                       , text
                       , xdg-basedir
 
 source-repository head
   type:                 git
-  location:             https://github.com/pbrisbin/contacts
+  location:             https://github.com/pbrisbin/google-contacts

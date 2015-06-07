@@ -1,9 +1,11 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Contacts.Format
+module Google.Contacts.Formatters.Mutt
     ( formatEntries
+    , formatEntry
+    , formatEmail
     ) where
 
-import Contacts.Feed
+import Google.Contacts.Feed
 
 import Data.List (sort)
 import Data.Monoid ((<>))
