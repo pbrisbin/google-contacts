@@ -43,7 +43,10 @@ I suggest the following approach:
   #!/bin/sh
   cd /path/to/google-contacts
 
-  source ./.env # set CLIENT_ID/CLIENT_SECRET
+  source ./.env
+  export GOOGLE_OAUTH_CLIENT_ID
+  export GOOGLE_OAUTH_CLIENT_SECRET
+
   dist/build/gc-mutt-query/gc-mutt-query "$@"
   ```
 
