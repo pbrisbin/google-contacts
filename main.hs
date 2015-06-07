@@ -2,18 +2,26 @@
 module Main where
 
 import Contacts.Client
+import Contacts.Feed
 
+import Control.Monad (forM_)
+import Data.Monoid ((<>))
 import Network.Google.OAuth2 (OAuth2Client(..), OAuth2Token, getAccessToken)
 import System.Environment (getEnv)
 
-import qualified Data.ByteString.Lazy.Char8 as L8
+import qualified Data.Text.IO as T
 
 main :: IO ()
 main = do
     t <- getToken
-    feed <- getFeedJSON t "pbrisbin@gmail.com"
+    decoded <- getFeedJSON t "pbrisbin@gmail.com"
 
-    L8.putStrLn $ feed
+    case decoded of
+        Left err -> putStrLn err
+        Right feed -> forM_ (feedEntries feed) $ \entry -> do
+            T.putStrLn $ entryTitle entry
+            forM_ (entryEmails entry) $ \email -> do
+                T.putStrLn $ "  - " <> emailAddress email
 
 getToken :: IO OAuth2Token
 getToken = do
