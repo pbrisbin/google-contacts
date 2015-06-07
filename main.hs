@@ -3,6 +3,7 @@ module Main where
 
 import Contacts.Client
 import Contacts.Feed
+import Contacts.Options
 
 import Control.Monad (forM_)
 import Data.Monoid ((<>))
@@ -13,8 +14,10 @@ import qualified Data.Text.IO as T
 
 main :: IO ()
 main = do
-    t <- getToken
-    decoded <- getFeedJSON t "pbrisbin@gmail.com"
+    options <- getOptions
+
+    token <- getToken $ oEmailAddress options
+    decoded <- getFeedJSON token $ oEmailAddress options
 
     case decoded of
         Left err -> putStrLn err
@@ -23,8 +26,8 @@ main = do
             forM_ (entryEmails entry) $ \email -> do
                 T.putStrLn $ "  - " <> emailAddress email
 
-getToken :: IO OAuth2Token
-getToken = do
+getToken :: String -> IO OAuth2Token
+getToken email = do
     client <- OAuth2Client
         <$> getEnv "GOOGLE_OAUTH_CLIENT_ID"
         <*> getEnv "GOOGLE_OAUTH_CLIENT_SECRET"
@@ -35,5 +38,6 @@ getToken = do
     scopes :: [String]
     scopes = ["https://www.googleapis.com/auth/contacts.readonly"]
 
+    -- TODO: XDG_CACHE_HOME
     cache :: FilePath
-    cache = "/home/patrick/.cache/contacts/oauth2.token"
+    cache = "/home/patrick/.cache/contacts/" <> email <> ".token"
