@@ -24,6 +24,9 @@ getFeedJSON token email = do
     return $ eitherDecode $ responseBody response
 
  where
-    feedUrl = "https://www.google.com/m8/feeds/contacts/" <> email <> "/full?alt=json"
+    feedUrl = "https://www.google.com/m8/feeds/contacts/"
+        <> email
+        <> "/full?max-results=1000&alt=json"
+
     authorize request = request
         { requestHeaders = [(hAuthorization, B8.pack $ "Bearer " <> token)] }
