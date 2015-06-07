@@ -1,8 +1,7 @@
-{-# LANGUAGE OverloadedStrings #-}
 module Main where
 
 import Contacts.Client
-import Contacts.Feed
+import Contacts.Format
 import Contacts.Options
 import Contacts.Query
 
@@ -21,8 +20,8 @@ main = do
 
     case decoded of
         Left err -> putStrLn err
-        Right feed -> print $
-            map show $ queryFeed (oQuery options) feed
+        Right feed -> T.putStrLn $
+            formatEntries $ queryFeed (oQuery options) feed
 
 getToken :: String -> IO OAuth2Token
 getToken email = do

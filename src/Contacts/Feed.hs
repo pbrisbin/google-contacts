@@ -13,7 +13,13 @@ data Email = Email
     { emailAddress :: Text
     , emailPrimary :: Bool
     }
-    deriving Show
+    deriving (Eq, Show)
+
+-- primary first, then address ascending
+instance Ord Email where
+    Email _ True `compare` Email _ False = LT
+    Email _ False `compare` Email _ True = GT
+    Email a _ `compare` Email b _ = a `compare` b
 
 instance FromJSON Email where
     parseJSON = withObject "Email" $ \o -> Email
