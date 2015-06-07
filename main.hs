@@ -6,10 +6,11 @@ import Contacts.Format
 import Contacts.Options
 import Contacts.Query
 
-import Data.Monoid ((<>))
 import Network.Google.OAuth2 (OAuth2Client(..), OAuth2Token, getAccessToken)
 import System.Environment (getEnv)
+import System.Environment.XDG.BaseDir (getUserCacheDir)
 import System.Exit (exitFailure)
+import System.FilePath ((</>), (<.>))
 import System.IO (hPutStrLn, stderr)
 
 import qualified Data.Text.IO as T
@@ -35,12 +36,12 @@ getToken email = do
         <$> getEnv "GOOGLE_OAUTH_CLIENT_ID"
         <*> getEnv "GOOGLE_OAUTH_CLIENT_SECRET"
 
-    getAccessToken client scopes $ Just cache
+    cdir <- getUserCacheDir "contacts"
+    getAccessToken client scopes $ Just $ cache cdir
 
   where
     scopes :: [String]
     scopes = ["https://www.googleapis.com/auth/contacts.readonly"]
 
-    -- TODO: XDG_CACHE_HOME
-    cache :: FilePath
-    cache = "/home/patrick/.cache/contacts/" <> email <> ".token"
+    cache :: FilePath -> FilePath
+    cache cdir = cdir </> email <.> "token"

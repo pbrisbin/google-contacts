@@ -33,9 +33,10 @@ executable contacts
   ghc-options:          -Wall -static
   build-depends:        base
                       , contacts
+                      , filepath
                       , google-oauth2
                       , text
-                      --, xdg-basedir
+                      , xdg-basedir
 
 source-repository head
   type:                 git
