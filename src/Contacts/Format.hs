@@ -12,10 +12,10 @@ import Data.Text (Text)
 import qualified Data.Text as T
 
 formatEntries :: [Entry] -> Text
-formatEntries = T.unlines . ("":) . map formatEntry
+formatEntries = T.unlines . ("":) . concatMap formatEntry
 
-formatEntry :: Entry -> Text
-formatEntry entry = T.unlines $
+formatEntry :: Entry -> [Text]
+formatEntry entry =
     map (formatEmail $ entryTitle entry) $ sort $ entryEmails entry
 
 formatEmail :: Text -> Email -> Text
