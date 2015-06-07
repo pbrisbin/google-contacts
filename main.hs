@@ -4,8 +4,8 @@ module Main where
 import Contacts.Client
 import Contacts.Feed
 import Contacts.Options
+import Contacts.Query
 
-import Control.Monad (forM_)
 import Data.Monoid ((<>))
 import Network.Google.OAuth2 (OAuth2Client(..), OAuth2Token, getAccessToken)
 import System.Environment (getEnv)
@@ -21,10 +21,8 @@ main = do
 
     case decoded of
         Left err -> putStrLn err
-        Right feed -> forM_ (feedEntries feed) $ \entry -> do
-            T.putStrLn $ entryTitle entry
-            forM_ (entryEmails entry) $ \email -> do
-                T.putStrLn $ "  - " <> emailAddress email
+        Right feed -> print $
+            map show $ queryFeed (oQuery options) feed
 
 getToken :: String -> IO OAuth2Token
 getToken email = do
