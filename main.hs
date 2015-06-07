@@ -8,6 +8,8 @@ import Contacts.Query
 import Data.Monoid ((<>))
 import Network.Google.OAuth2 (OAuth2Client(..), OAuth2Token, getAccessToken)
 import System.Environment (getEnv)
+import System.Exit (exitFailure)
+import System.IO (hPutStrLn, stderr)
 
 import qualified Data.Text.IO as T
 
@@ -19,7 +21,10 @@ main = do
     decoded <- getFeedJSON token $ oEmailAddress options
 
     case decoded of
-        Left err -> putStrLn err
+        Left err -> do
+            hPutStrLn stderr err
+            exitFailure
+
         Right feed -> T.putStrLn $
             formatEntries $ queryFeed (oQuery options) feed
 
