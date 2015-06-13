@@ -1,0 +1,13 @@
+{
+  "feed": {
+    "entry": [{
+      "id": { "$t": "entry-id" },
+      "title": { "$t": "entry-title" },
+      "gd$email": [
+        { "address": "email1@example.com", "primary": "true" },
+        { "address": "email2@example.com" },
+        { "address": "email3@example.com" }
+      ]
+    }]
+  }
+}

@@ -37,6 +37,18 @@ executable gc-mutt-query
                       , text
                       , xdg-basedir
 
+Test-Suite spec
+  Type:                 exitcode-stdio-1.0
+  Default-Language:     Haskell2010
+  Hs-Source-Dirs:       test
+  Ghc-Options:          -Wall
+  Main-Is:              Spec.hs
+  Build-Depends:        base
+                      , hspec
+                      , google-contacts
+                      , aeson
+                      , bytestring
+
 source-repository head
   type:                 git
   location:             https://github.com/pbrisbin/google-contacts
