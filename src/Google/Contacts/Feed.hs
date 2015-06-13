@@ -1,9 +1,14 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Google.Contacts.Feed
     ( Email(..)
     , Entry(..)
     , Feed(..)
     ) where
+
+#if __GLASGOW_HASKELL__ < 710
+import Control.Applicative ((<$>), (<*>))
+#endif
 
 import Data.Aeson
 import Data.Monoid ((<>))
