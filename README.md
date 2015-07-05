@@ -1,60 +1,47 @@
 # Google Contacts
 
-A pretty-dumb Google Contacts API client for the sole purpose of outputting
-contacts suitably for Mutt's `$query_command`.
+Present here is a (limited) Google Contacts API client library, an executable
+that uses that library to query contacts from within [Mutt][], and a Dockerfile
+for ease of use by those without a Haskell installation.
 
-## Installation
+[mutt]: http://www.mutt.org/
 
-```
-git clone https://github.com/pbrisbin/google-contacts && cd google-contacts
-cabal sandbox init
-cabal install --dependencies-only
-cabal build
-```
+This project is installable as a normal Haskell package, but the instructions in
+this README focus on a streamlined, Docker-based flow. If you haven't yet,
+install and configure [Docker][].
 
-## Usage
+[docker]: https://www.docker.com/
+
+## OAuth Setup
 
 - Register a project in Google's [API Console][console]
 - Enable the Contacts API for the project
 - Create OAuth2 credentials for the project
+- Note your Client ID and Secret
 
 [console]: https://code.google.com/apis/console#access
 
+## Installation
+
 ```
-export GOOGLE_OAUTH_CLIENT_ID=abc123
-export GOOGLE_OAUTH_CLIENT_SECRET=abc123
-cabal run -- you@gmail.com query
+docker pull pbrisbin/google-contacts
+docker run --name gc-config -it \
+  -e GOOGLE_OAUTH_CLIENT_ID=... \
+  -e GOOGLE_OAUTH_CLIENT_SECRET=... \
+  pbrisbin/google-contacts config you@gmail.com
 ```
 
-## Integrating with Mutt
+*Note*: multiple emails may be passed at once.
 
-I suggest the following approach:
+## Usage
 
-- Create a `.env` file:
+```
+docker run --rm --volumes-from gc-config \
+  pbrisbin/google-contacts mutt-query you@gmail.com query
+```
 
-  ```
-  GOOGLE_OAUTH_CLIENT_ID=abc123
-  GOOGLE_OAUTH_CLIENT_SECRET=abc123
-  ```
+## Configuring Mutt
 
-- Write a small wrapper script:
-
-  ```sh
-  #!/bin/sh
-  cd /path/to/google-contacts
-
-  source ./.env
-  export GOOGLE_OAUTH_CLIENT_ID
-  export GOOGLE_OAUTH_CLIENT_SECRET
-
-  dist/build/gc-mutt-query/gc-mutt-query "$@"
-  ```
-
-- Configure Mutt:
-
-  ```
-  set query_command = "/path/to/wrapper you@gmail.com '%s'"
-  ```
-
-**Note**: the first time you run the command, you'll have to do the OAuth2
-verification, so be sure to do this outside of Mutt.
+```
+set query_command = "docker run ... you@gmail.com '%s'"
+```
