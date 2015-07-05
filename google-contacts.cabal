@@ -27,6 +27,15 @@ library
                       , http-types
                       , text
 
+executable gc-config
+  default-language:     Haskell2010
+  main-is:              config.hs
+  ghc-options:          -Wall -threaded
+  build-depends:        base
+                      , filepath
+                      , google-oauth2
+                      , xdg-basedir
+
 executable gc-mutt-query
   default-language:     Haskell2010
   main-is:              mutt-query.hs

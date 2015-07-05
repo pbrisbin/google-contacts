@@ -2,6 +2,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
 
+import Token
+
 #if __GLASGOW_HASKELL__ < 710
 import Control.Applicative ((<$>), (<*>))
 #endif
@@ -10,12 +12,8 @@ import Google.Contacts.Client
 import Google.Contacts.Formatters.Mutt
 import Google.Contacts.Query
 
-import Network.Google.OAuth2 (OAuth2Client(..), OAuth2Token, getAccessToken)
 import Options.Applicative
-import System.Environment (getEnv)
-import System.Environment.XDG.BaseDir (getUserCacheDir)
 import System.Exit (exitFailure)
-import System.FilePath ((</>), (<.>))
 import System.IO (hPutStrLn, stderr)
 
 import qualified Data.Text.IO as T
@@ -39,23 +37,6 @@ main = do
 
         Right feed -> T.putStrLn $
             formatEntries $ queryFeed (oQuery options) feed
-
-getToken :: String -> IO OAuth2Token
-getToken email = do
-    client <- OAuth2Client
-        <$> getEnv "GOOGLE_OAUTH_CLIENT_ID"
-        <*> getEnv "GOOGLE_OAUTH_CLIENT_SECRET"
-
-    cdir <- getUserCacheDir "contacts"
-    getAccessToken client scopes $ Just $ cache cdir
-
-  where
-    scopes :: [String]
-    scopes = ["https://www.googleapis.com/auth/contacts.readonly"]
-
-    cache :: FilePath -> FilePath
-    cache cdir = cdir </> email <.> "token"
-
 
 getOptions :: IO Options
 getOptions = execParser $ parseOptions
