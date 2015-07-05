@@ -1,0 +1,3 @@
+#!/bin/sh
+cmd=$1; shift
+exec "dist/build/gc-$cmd/gc-$cmd" "$@"
