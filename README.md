@@ -1,16 +1,9 @@
 # Google Contacts
 
-Present here is a (limited) Google Contacts API client library, an executable
-that uses that library to query contacts from within [Mutt][], and a Dockerfile
-for ease of use by those without a Haskell installation.
+Present here is a (limited) Google Contacts API client library and an executable
+that uses that library to query contacts from within [Mutt][].
 
 [mutt]: http://www.mutt.org/
-
-This project is installable as a normal Haskell package, but the instructions in
-this README focus on a streamlined, Docker-based flow. If you haven't yet,
-install and configure [Docker][].
-
-[docker]: https://www.docker.com/
 
 ## OAuth Setup
 
@@ -24,24 +17,30 @@ install and configure [Docker][].
 ## Installation
 
 ```
-docker pull pbrisbin/google-contacts
-docker run --name gc-config -it \
-  -e GOOGLE_OAUTH_CLIENT_ID=... \
-  -e GOOGLE_OAUTH_CLIENT_SECRET=... \
-  pbrisbin/google-contacts config you@gmail.com
+git clone https://github.com/pbrisbin/google-contacts
+cd google-contacts
+make CLIENT_ID=x CLIENT_SECRET=y
+make install
 ```
 
-*Note*: multiple emails may be passed at once.
+**NOTE**: This will create `app/Client.hs` with your client credentials.
+
+## Setup
+
+```
+gc-config you@gmail.com
+```
+
+**NOTE**: This will create `~/.cache/contacts/` for caching OAuth tokens.
 
 ## Usage
 
 ```
-docker run --rm --volumes-from gc-config \
-  pbrisbin/google-contacts mutt-query you@gmail.com query
+gc-mutt-query you@gmail.com query
 ```
 
 ## Configuring Mutt
 
 ```
-set query_command = "docker run ... you@gmail.com '%s'"
+set query_command = "gc-mutt-query you@gmail.com '%s'"
 ```

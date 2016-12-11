@@ -1,17 +1,17 @@
 module Token (getToken) where
 
 import Network.Google.OAuth2 (OAuth2Client(..), OAuth2Token, getAccessToken)
-import System.Environment (getEnv)
 import System.Environment.XDG.BaseDir (getUserCacheDir)
+import System.Directory (createDirectoryIfMissing)
 import System.FilePath ((</>), (<.>))
+
+import qualified Client as C
 
 getToken :: String -> IO OAuth2Token
 getToken email = do
-    client <- OAuth2Client
-        <$> getEnv "GOOGLE_OAUTH_CLIENT_ID"
-        <*> getEnv "GOOGLE_OAUTH_CLIENT_SECRET"
-
+    let client = OAuth2Client C.clientId C.clientSecret
     cdir <- getUserCacheDir "contacts"
+    createDirectoryIfMissing True cdir
     getAccessToken client scopes $ Just $ cache cdir
 
   where
