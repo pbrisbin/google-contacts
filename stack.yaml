@@ -1,0 +1,6 @@
+resolver: lts-7.12
+packages:
+- '.'
+flags: {}
+extra-deps:
+  - google-oauth2-0.2.2
