@@ -1,23 +1,14 @@
-{-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
+
 module Google.Contacts.FeedSpec
     ( spec
-    , main
     ) where
 
-#if __GLASGOW_HASKELL__ < 710
-import Control.Applicative ((<$>))
-#endif
-
 import Test.Hspec
-import Google.Contacts.Feed
 
 import Data.Aeson
-
 import qualified Data.ByteString.Lazy.Char8 as C8
-
-main :: IO ()
-main = hspec spec
+import Google.Contacts.Feed
 
 spec :: Spec
 spec = describe "Feed" $
@@ -37,5 +28,5 @@ spec = describe "Feed" $
 
 expectEntry :: Either String Feed -> (Entry -> Expectation) -> Expectation
 expectEntry (Left err) _ = expectationFailure $ "parse error: " ++ err
-expectEntry (Right (Feed [])) _ = expectationFailure $ "feed has no entries"
+expectEntry (Right (Feed [])) _ = expectationFailure "feed has no entries"
 expectEntry (Right (Feed (entry:_))) f = f entry

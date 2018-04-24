@@ -23,7 +23,7 @@ make CLIENT_ID=x CLIENT_SECRET=y
 make install
 ```
 
-**NOTE**: This will create `app/Client.hs` with your client credentials.
+**NOTE**: This will create `src/Client.hs` with your client credentials.
 
 ## Setup
 
@@ -44,3 +44,7 @@ gc-mutt-query you@gmail.com query
 ```
 set query_command = "gc-mutt-query you@gmail.com '%s'"
 ```
+
+---
+
+[LICENSE](./LICENSE)

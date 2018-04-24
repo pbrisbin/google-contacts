@@ -1,15 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
+
 module Google.Contacts.QuerySpec
     ( spec
-    , main
     ) where
 
 import Test.Hspec
+
 import Google.Contacts.Feed
 import Google.Contacts.Query
-
-main :: IO ()
-main = hspec spec
 
 spec :: Spec
 spec = describe "Query" $

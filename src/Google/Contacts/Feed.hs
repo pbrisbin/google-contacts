@@ -49,7 +49,7 @@ instance FromJSON Entry where
         <*> ((.: "$t") =<< o .: "title")
         <*> o .:? "gd$email" .!= []
 
-data Feed = Feed
+newtype Feed = Feed
     { feedEntries :: [Entry]
     }
     deriving Show

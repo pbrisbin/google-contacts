@@ -1,22 +1,15 @@
-{-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
-module Main where
 
-import Token
+module Main (main) where
 
-#if __GLASGOW_HASKELL__ < 710
-import Control.Applicative ((<$>), (<*>))
-#endif
-
+import qualified Data.Text.IO as T
 import Google.Contacts.Client
 import Google.Contacts.Formatters.Mutt
 import Google.Contacts.Query
-
+import Google.Contacts.Token
 import Options.Applicative
 import System.Exit (exitFailure)
 import System.IO (hPutStrLn, stderr)
-
-import qualified Data.Text.IO as T
 
 data Options = Options
     { oEmailAddress :: String

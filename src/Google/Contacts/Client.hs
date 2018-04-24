@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE RecordWildCards #-}
 
 module Google.Contacts.Client
     ( getFeedJSON
@@ -7,19 +8,18 @@ module Google.Contacts.Client
 import Control.Exception.Safe (handleAny)
 import Data.Aeson
 import Data.Monoid ((<>))
-import Network.Google.OAuth2 (OAuth2Token)
+import Data.Text.Encoding (encodeUtf8)
 import Network.HTTP.Simple
-
-import qualified Data.ByteString.Char8 as B8
+import Network.OAuth.OAuth2
 
 getFeedJSON :: FromJSON a => OAuth2Token -> String -> IO (Either String a)
-getFeedJSON token email = handleAny (pure . Left . show) $ do
+getFeedJSON OAuth2Token{..} email = handleAny (pure . Left . show) $ do
     request <- parseRequest
         $ "https://www.google.com/m8/feeds/contacts/"
         <> email <> "/full?max-results=1000&alt=json"
-
-    Right . getResponseBody <$> httpJSON (authorize request)
+    response <- httpJSON (authorize (atoken accessToken) request)
+    pure $ Right $ getResponseBody response
   where
-    authorize = setRequestHeaders
-        [ ("Authorization", B8.pack $ "Bearer " <> token)
+    authorize token = setRequestHeaders
+        [ ("Authorization", encodeUtf8 $ "Bearer " <> token)
         ]

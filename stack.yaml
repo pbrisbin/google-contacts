@@ -1,4 +1,5 @@
 ---
 resolver: lts-11.6
 extra-deps:
-  - ../google-oauth2
+  - google-oauth2-0.3.0.0
+  - hoauth2-1.7.1

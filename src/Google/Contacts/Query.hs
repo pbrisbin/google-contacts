@@ -14,7 +14,7 @@ queryFeed query = filter (matches query) . feedEntries
 matches :: String -> Entry -> Bool
 matches query entry
     | query `matchesText` title = True
-    | any ((query `matchesText`) . emailAddress) $ emails = True
+    | any ((query `matchesText`) . emailAddress) emails = True
     | otherwise = False
 
   where
