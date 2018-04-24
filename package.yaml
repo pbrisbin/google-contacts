@@ -1,0 +1,65 @@
+---
+name: google-contacts
+version: '0.0.0'
+synopsis: Minimal Google Contacts API client
+description: ! 'Google Contaacts API client and example usage via an
+  mutt-query executable useful as mutt\''s query_cmd
+  '
+category: Network
+author: Pat Brisbin <pbrisbin@gmail.com>
+maintainer: Pat Brisbin <pbrisbin@gmail.com>
+license: MIT
+github: pbrisbin/google-contacts
+
+dependencies:
+  - base >=4 && <5
+
+ghc-options: -Wall
+
+library:
+  source-dirs: src
+  dependencies:
+    - aeson
+    - bytestring
+    - google-oauth2 >=0.2.0
+    - http-conduit
+    - http-types
+    - safe-exceptions
+    - text
+
+executables:
+  gc-config:
+    main: config.hs
+    source-dirs: app
+    ghc-options:
+      - -Wall
+      - -threaded
+    dependencies:
+      - directory
+      - filepath
+      - google-oauth2
+      - xdg-basedir
+  gc-mutt-query:
+    main: mutt-query.hs
+    source-dirs: app
+    ghc-options:
+      - -Wall
+      - -threaded
+    dependencies:
+      - directory
+      - filepath
+      - google-contacts
+      - google-oauth2
+      - optparse-applicative
+      - text
+      - xdg-basedir
+
+tests:
+  spec:
+    main: Spec.hs
+    source-dirs: test
+    dependencies:
+      - aeson
+      - bytestring
+      - google-contacts
+      - hspec
